@@ -96,6 +96,19 @@ angular
             });
           }
         }
+      })
+      .state('channels.messages', {
+        url: '/{channelId}/messages',
+        templateUrl: 'channels/messages.html',
+        controller: 'MessagesCtrl as messagesCtrl',
+        resolve: {
+          messages: function($stateParams, Messages){
+            return Messages.forChannel($stateParams.channelId).$loaded();
+          },
+          channelName: function($stateParams, channels){
+            return '#'+channels.$getRecord($stateParams.channelId).name;
+          }
+        }
       }).state('channels.create',{
         url: '/create',
         templateUrl: 'channels/create.html',
