@@ -113,6 +113,20 @@ angular
         url: '/create',
         templateUrl: 'channels/create.html',
         controller: 'ChannelsCtrl as channelsCtrl'
+      })
+      .state('channels.direct', {
+        url: '/{uid}/messages/direct',
+        templateUrl: 'channels/messages.html',
+        resolve: {
+          messages: function($stateParams, Messages, profile){
+            return Messages.forUsers($stateParams.uid, profile.$uid).$loaded();
+          },
+          channelName: function($stateParams, Users){
+            return Users.all.$loaded()then(function(){
+              return '@'+Users.getDisplayName($stateParams.uid);
+            });
+          }
+        }
       });
       }
 
